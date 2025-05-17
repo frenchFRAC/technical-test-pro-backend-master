@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import { memoize } from 'lodash';
 import { ComponentPropsWithoutRef, ElementType, useMemo } from 'react';
 import { FieldError, useFormContext } from 'react-hook-form';

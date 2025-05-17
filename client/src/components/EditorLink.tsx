@@ -1,4 +1,4 @@
-import { Link } from '@material-ui/core';
+import { Link } from '@mui/material';
 import config from 'config';
 import { ReactNode } from 'react';
 
@@ -9,7 +9,9 @@ type Props = { path: string; children: ReactNode };
 const EditorLink = (props: Props) => {
   const { path, children } = props;
   return (
-    <Link href={`vscode://file/${CURRENT_WORKING_DIRECTORY}/${path}`}>
+    <Link
+      href={`vscode://file/${CURRENT_WORKING_DIRECTORY}/${path}`}
+      underline="hover">
       {children}
     </Link>
   );

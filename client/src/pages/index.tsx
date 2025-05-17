@@ -1,4 +1,4 @@
-import { Link } from '@material-ui/core';
+import { Link } from '@mui/material';
 import EditorLink from 'components/EditorLink';
 import Section from 'components/Section';
 import NextLink from 'next/link';
@@ -11,7 +11,7 @@ const Home = () => {
       <Section name="intro" title="Introduction">
         <p>
           To get the most out of this introduction, open the project using{' '}
-          <Link href="https://code.visualstudio.com/" target="_blank">
+          <Link href="https://code.visualstudio.com/" target="_blank" underline="hover">
             Visual Studio Code
           </Link>{' '}
           by clicking <EditorLink path="">this link</EditorLink>. You'll be able
@@ -63,7 +63,7 @@ const Home = () => {
       <Section name="appointments" title="Appointments">
         <NextLink href="/appointments">
           <div className='cta'>
-            <p><Link>Let's work on appointments</Link></p>
+            <p><Link underline="hover">Let's work on appointments</Link></p>
           </div>
         </NextLink>
       </Section>

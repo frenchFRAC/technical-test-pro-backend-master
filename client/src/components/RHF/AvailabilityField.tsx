@@ -1,4 +1,4 @@
-import { List, Typography } from '@material-ui/core';
+import { List, Typography } from '@mui/material';
 import { Availability } from 'store/types';
 import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';

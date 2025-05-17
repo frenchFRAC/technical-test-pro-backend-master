@@ -1,32 +1,47 @@
-import { makeStyles } from '@material-ui/core';
+import { createTheme, ThemeProvider as MuiThemeProvider, styled } from '@mui/material/styles';
 import { Header } from './Header';
 
-const useStyles = makeStyles({
-  layout: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    fontFamily: 'Roboto, sans-serif',
+const localTheme = createTheme({
+  palette: {
+    common: {
+      white: '#ffffff',
+    },
+    text: {
+      secondary: 'lightgray',
+    }
   },
-  content: {
-    height: '100%',
-  },
+  // Vous pouvez ajouter d'autres configurations de thème ici si nécessaire
 });
+
+// Définition des composants stylisés pour le Layout
+const StyledLayoutContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  minHeight: '100vh', // Pour que le layout prenne toute la hauteur de la vue
+}));
+
+const StyledPageContent = styled('main')(({ theme }) => ({ // Utilisation de 'main' pour le contenu principal
+  flexGrow: 1, // Le contenu prend l'espace restant
+  padding: theme.spacing(3), // Ajoute un peu de marge intérieure autour du contenu
+  // Ajoutez d'autres styles nécessaires pour la zone de contenu ici
+}));
 
 type Props = {
   children: React.ReactNode;
-  title?: string;
+  title?: string; // title est optionnel ici
   subtitle?: string;
 };
 
 export const Layout = (props: Props) => {
   const { children, title, subtitle } = props;
-  const classes = useStyles();
 
   return (
-    <div className={classes.layout}>
-      <Header title={title} subtitle={subtitle} />
-      <div className={classes.content}>{children}</div>
-    </div>
+    <MuiThemeProvider theme={localTheme}>
+      <StyledLayoutContainer>
+        {/* Header attend un titre non optionnel, s'il est optionnel dans Layout, fournir une valeur par défaut ou ajuster Header */} 
+        <Header title={title || 'Default Title'} subtitle={subtitle} />
+        <StyledPageContent>{children}</StyledPageContent>
+      </StyledLayoutContainer>
+    </MuiThemeProvider>
   );
 };
