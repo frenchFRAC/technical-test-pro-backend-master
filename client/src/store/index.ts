@@ -13,3 +13,7 @@ const rootReducer = combineReducers(reducers);
 export const store = configureStore({
   reducer: rootReducer,
 });
+
+// Inférer les types `RootState` et `AppDispatch` depuis le store lui-même
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch; // Exporter AppDispatch

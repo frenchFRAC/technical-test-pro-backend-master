@@ -1,18 +1,28 @@
-import { AppBar, makeStyles, Toolbar } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
+import { AppBar, Toolbar, IconButton, Typography, Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const useStyles = makeStyles({
-  back: {
-    gridArea: 'back',
-    color: 'white',
-    margin: 'auto',
-  },
-  backLabel: { color: 'white' },
-  title: { gridArea: 'title', color: 'white' },
-  subtitle: { gridArea: 'subtitle', color: 'lightgray' },
+const StyledLink = styled(Link)({
+  textDecoration: 'none',
 });
+
+const BackButtonLabel = styled('span')(({ theme }) => ({
+  color: theme.palette.common.white,
+}));
+
+const Title = styled(Typography)(({ theme }) => ({
+  gridArea: 'title',
+  color: theme.palette.common.white,
+  flexGrow: 1,
+  marginLeft: theme.spacing(2),
+}));
+
+const Subtitle = styled(Typography)(({ theme }) => ({
+  gridArea: 'subtitle',
+  color: theme.palette.text.secondary,
+  marginLeft: theme.spacing(1),
+}));
 
 type Props = {
   title: string;
@@ -22,20 +32,25 @@ type Props = {
 export const Header = (props: Props) => {
   const { title, subtitle } = props;
   const { pathname } = useRouter();
-  const classes = useStyles();
+
   return (
     <AppBar position="static">
       <Toolbar>
-        <Link href="/">
+        <StyledLink href="/" passHref>
           <IconButton
-            classes={{ label: classes.backLabel }}
+            edge="start"
+            color="inherit"
+            aria-label="back to home"
             disabled={pathname === '/'}
+            size="large"
           >
-            M
+            <BackButtonLabel>M</BackButtonLabel>
           </IconButton>
-        </Link>
-        <span className={classes.title}>{title}</span>
-        {subtitle && <span className={classes.subtitle}>{subtitle}</span>}
+        </StyledLink>
+        <Title variant="h6">
+          {title}
+        </Title>
+        {subtitle && <Subtitle variant="body2">{subtitle}</Subtitle>}
       </Toolbar>
     </AppBar>
   );

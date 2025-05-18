@@ -4,8 +4,8 @@ import {
   CardHeader,
   List,
   Typography,
-} from '@material-ui/core';
-import { CalendarToday } from '@material-ui/icons';
+} from '@mui/material';
+import { CalendarToday } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import {
   appointmentsSelectors,

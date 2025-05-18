@@ -1,5 +1,5 @@
-import { IconButton } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { IconButton } from '@mui/material';
+import { Close } from '@mui/icons-material';
 import { useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -17,7 +17,7 @@ const ResetFieldButton = (props: Props) => {
   }, [name, setValue]);
 
   return (
-    <IconButton onClick={onReset}>
+    <IconButton onClick={onReset} size="large">
       <Close />
     </IconButton>
   );

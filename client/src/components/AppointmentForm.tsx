@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from 'store';
 import {
   appointmentsActions,
   availabilitiesActions,
@@ -16,28 +17,35 @@ import AvailabilityField from './RHF/AvailabilityField';
 import SelectField, { getOptionsDefault } from './RHF/SelectField';
 
 type AppointmentFormValues = {
-  practitionerId: number;
-  patientId: number;
-  availabilityId: number;
+  practitionerId: number | null;
+  patientId: number | null;
+  availabilityId: number | null;
 };
 
 const AppointmentForm = () => {
-  const dispatch = useDispatch();
-  const methods = useForm<AppointmentFormValues>();
-  const { handleSubmit, setValue, reset } = methods;
+  const dispatch = useDispatch<AppDispatch>();
+  const methods = useForm<AppointmentFormValues>({
+    defaultValues: {
+      practitionerId: null,
+      patientId: null,
+      availabilityId: null,
+    }
+  });
+  const { handleSubmit, setValue, reset, watch } = methods;
 
   const practitioners = useSelector(practitionersSelectors.selectAll);
   const patients = useSelector(patientsSelectors.selectAll);
-  const availabilities = useSelector(availabilitiesSelectors.selectEntities);
+  const allAvailabilities = useSelector(availabilitiesSelectors.selectEntities);
+  const selectedPractitionerId = watch("practitionerId");
 
   useEffect(() => {
     dispatch(practitionersActions.getList());
     dispatch(patientsActions.getList());
-  }, []);
+  }, [dispatch]);
 
   const onPractitionerChange = useCallback(
-    (practitionerId: number) => {
-      setValue('availabilityId', '');
+    (practitionerId: number | null) => {
+      setValue('availabilityId', null);
       if (practitionerId) {
         dispatch(
           availabilitiesActions.getList({
@@ -54,13 +62,23 @@ const AppointmentForm = () => {
   );
 
   const onSubmit = useCallback(
-    ({ practitionerId, patientId, availabilityId }: AppointmentFormValues) => {
-      const { startDate, endDate } = availabilities[availabilityId];
-      const item = { practitionerId, patientId, startDate, endDate };
+    (data: AppointmentFormValues) => {
+      if (data.availabilityId === null) {
+        console.error("Availability ID is null, cannot create appointment");
+        return;
+      }
+      const selectedAvailability = allAvailabilities[data.availabilityId];
+      
+      if (!selectedAvailability) {
+        console.error("Selected availability not found");
+        return;
+      }
+      const { startDate, endDate } = selectedAvailability;
+      const item = { practitionerId: data.practitionerId, patientId: data.patientId, startDate, endDate };
       dispatch(appointmentsActions.create({ item }));
       reset();
     },
-    [availabilities],
+    [allAvailabilities, dispatch, reset],
   );
 
   return (

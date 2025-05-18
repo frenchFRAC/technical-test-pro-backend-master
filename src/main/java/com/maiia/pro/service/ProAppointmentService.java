@@ -23,4 +23,8 @@ public class ProAppointmentService {
     public List<Appointment> findByPractitionerId(Integer practitionerId) {
         return appointmentRepository.findByPractitionerId(practitionerId);
     }
+
+    public Appointment createAppointment(Appointment appointment) {
+        return appointmentRepository.save(appointment);
+    }
 }

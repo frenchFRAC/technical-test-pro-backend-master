@@ -4,9 +4,9 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import DoneAllIcon from '@material-ui/icons/DoneAll';
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 type Props = {
   tasks: string[];

@@ -4,9 +4,9 @@ import {
   CardHeader,
   makeStyles,
   Typography,
-} from '@material-ui/core';
-import List from '@material-ui/core/List';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+} from '@mui/material';
+import List from '@mui/material/List';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { useSelector } from 'react-redux';
 import { timeslotsSelectors } from 'store/selectors';
 import { formatDateRange } from 'utils/format';
