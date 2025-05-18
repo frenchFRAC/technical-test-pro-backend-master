@@ -4,6 +4,7 @@ import com.maiia.pro.entity.Appointment;
 import com.maiia.pro.service.ProAppointmentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,5 +27,12 @@ public class ProAppointmentController {
     @GetMapping
     public List<Appointment> getAppointments() {
         return proAppointmentService.findAll();
+    }
+
+    @ApiOperation(value = "Create a new appointment")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Appointment createAppointment(@RequestBody Appointment appointment) {
+        return proAppointmentService.createAppointment(appointment);
     }
 }
