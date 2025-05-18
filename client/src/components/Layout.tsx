@@ -38,8 +38,7 @@ export const Layout = (props: Props) => {
   return (
     <MuiThemeProvider theme={localTheme}>
       <StyledLayoutContainer>
-        {/* Header attend un titre non optionnel, s'il est optionnel dans Layout, fournir une valeur par défaut ou ajuster Header */} 
-        <Header title={title || 'Default Title'} subtitle={subtitle} />
+         <Header title={title || 'Default Title'} subtitle={subtitle} />
         <StyledPageContent>{children}</StyledPageContent>
       </StyledLayoutContainer>
     </MuiThemeProvider>
