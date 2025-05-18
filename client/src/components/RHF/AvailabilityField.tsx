@@ -1,7 +1,7 @@
 import { List, Typography } from '@mui/material';
 import { Availability } from 'store/types';
 import { useMemo } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext, FieldError } from 'react-hook-form';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import { availabilitiesSelectors } from 'store/selectors';
@@ -25,7 +25,7 @@ const groupAvailabilitiesByDate = (availabilities: Availability[]) =>
 
 const AvailabilityField = (props: Props) => {
   const { name } = props;
-  const { control, errors } = useFormContext();
+  const { control, formState: { errors: formHookErrors } } = useFormContext();
   const availabilities = useSelector(availabilitiesSelectors.selectAll);
   const loading = useSelector(availabilitiesSelectors.selectLoading);
 
@@ -35,13 +35,16 @@ const AvailabilityField = (props: Props) => {
   );
 
   if (!availabilities.length) return null;
+
+  const fieldError = formHookErrors?.[name] as FieldError | undefined;
+
   return (
     <Controller
       control={control}
       defaultValue=""
       name={name}
       rules={{ required: 'The availability field is required' }}
-      render={({ onChange, value }) => (
+      render={({ field: { onChange, value } }) => (
         <>
           <List className="list">
             {Object.keys(availabilitiesGroupByDate).map(
@@ -78,8 +81,8 @@ const AvailabilityField = (props: Props) => {
               },
             )}
           </List>
-          {errors[name] ? (
-            <Typography color="error">{errors[name].message}</Typography>
+          {fieldError?.message ? (
+            <Typography color="error">{fieldError.message}</Typography>
           ) : null}
         </>
       )}

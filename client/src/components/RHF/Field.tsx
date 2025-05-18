@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { memoize } from 'lodash';
 import { ComponentPropsWithoutRef, ElementType, useMemo } from 'react';
-import { FieldError, useFormContext } from 'react-hook-form';
+import { FieldError, useFormContext, UseFormReturn } from 'react-hook-form';
 
 export type FieldProps<C extends ElementType> = {
   autoComplete?: string;
@@ -34,8 +34,24 @@ const Field = <C extends keyof JSX.IntrinsicElements | ElementType = 'input'>(
     ...rest
   } = props;
 
-  const { errors, register } = useFormContext();
-  const error = errors[name];
+  const formContext = useFormContext();
+
+  if (!formContext) {
+    console.warn(`RHF/Field: Form context not available for field "${name}". Ensure Field is rendered within a FormProvider.`);
+    return (
+      <Component
+        name={name}
+        autoComplete={autoComplete}
+        placeholder={placeholder}
+        {...rest}
+      >
+        {children}
+      </Component>
+    );
+  }
+
+  const { register, formState: { errors: formErrors } } = formContext;
+  const error = formErrors?.[name];
 
   const placeholderValue = useMemo(() => {
     if (!placeholder) return;
@@ -48,27 +64,28 @@ const Field = <C extends keyof JSX.IntrinsicElements | ElementType = 'input'>(
         name={name}
         autoComplete={autoComplete}
         placeholder={placeholderValue}
-        ref={register({ required })}
-        gridkey={label ? null : name}
+        {...register(name, { required: required || undefined })}
+        gridkey={label ? undefined : name}
         {...rest}
       >
         {children}
       </Component>
     ),
     [
-      autoComplete,
-      children,
       Component,
-      label,
       name,
+      autoComplete,
       placeholderValue,
       register,
       required,
+      rest,
+      children,
+      label,
     ],
   );
   const fieldError = useMemo(
     () =>
-      error ? <Typography color="error">{error.message}</Typography> : null,
+      error && error.message ? <Typography color="error">{error.message as string}</Typography> : null,
     [error],
   );
   if (label) {

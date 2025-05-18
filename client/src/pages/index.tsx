@@ -14,7 +14,7 @@ const Home = () => {
           <Link href="https://code.visualstudio.com/" target="_blank" underline="hover">
             Visual Studio Code
           </Link>{' '}
-          by clicking <EditorLink path="">this link</EditorLink>. You'll be able
+          by clicking <EditorLink path="src/components/EditorLink.tsx">this link</EditorLink>. You'll be able
           to open local files directly from your web browser. If you favor
           another editor which provides a similar API to open files, feel free
           to modify{' '}
@@ -51,7 +51,7 @@ const Home = () => {
           While selecting a practitioner in the dropdown list, the
           availabilities must be generated and displayed in the front (as in the
           screenshots). To create an appointment, you must select an
-          availability and click on the button “create appointment”. An endpoint
+          availability and click on the button "create appointment". An endpoint
           must be created in the back to create the appointment
         </p>
         <p>
@@ -61,10 +61,19 @@ const Home = () => {
         </p>
       </Section>
       <Section name="appointments" title="Appointments">
-        <NextLink href="/appointments">
-          <div className='cta'>
-            <p><Link underline="hover">Let's work on appointments</Link></p>
-          </div>
+        <NextLink href="/appointments" passHref>
+          <Link 
+            component="span" 
+            underline="hover" 
+            sx={{ 
+              display: 'inline-block', 
+              padding: '10px', 
+              cursor: 'pointer', 
+              color: 'primary.main',
+            }}
+          >
+            Let's work on appointments
+          </Link>
         </NextLink>
       </Section>
     </div>

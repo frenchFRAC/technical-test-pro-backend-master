@@ -29,20 +29,30 @@ const SelectField = (props: SelectFieldProps) => {
   const { name, options, placeholder, onChange, ...fieldProps } = props;
 
   const { control } = useFormContext();
-  const value = useWatch<number>({
+  const watchedStringValue = useWatch({
     control,
     name,
+    defaultValue: fieldProps.defaultValue || "",
   });
 
   useEffect(() => {
-    onChange?.(value);
-  }, [value]);
+    if (onChange) {
+      if (typeof watchedStringValue === 'string' && watchedStringValue !== '') {
+        const numValue = parseFloat(watchedStringValue);
+        if (!isNaN(numValue)) {
+          onChange(numValue);
+        }
+      } else if (typeof watchedStringValue === 'number') {
+        onChange(watchedStringValue);
+      }
+    }
+  }, [watchedStringValue, onChange]);
 
   return (
     <div>
-      <Field component="select" defaultValue="" name={name} {...fieldProps}>
-        <option value="" disabled>
-          {placeholder}
+      <Field component="select" name={name} {...fieldProps}>
+        <option value="" disabled={!placeholder}>
+          {placeholder || ''}
         </option>
         {options.map((option) => (
           <option key={option.key} value={option.value}>
@@ -50,7 +60,7 @@ const SelectField = (props: SelectFieldProps) => {
           </option>
         ))}
       </Field>
-      {value && <ResetFieldButton name={name} />}
+      {watchedStringValue !== undefined && watchedStringValue !== "" && <ResetFieldButton name={name} />}
     </div>
   );
 };

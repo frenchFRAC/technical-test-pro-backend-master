@@ -1,35 +1,53 @@
 import { Provider } from 'react-redux';
-import { adaptV4Theme } from '@mui/material/styles';
-import { createMuiTheme, ThemeProvider, Theme, StyledEngineProvider } from '@mui/material';
+import { ThemeProvider, Theme, StyledEngineProvider, createTheme } from '@mui/material/styles';
 import { store } from 'store';
 import { Layout } from 'components/Layout';
 import 'styles/styles.scss';
-
+import type { AppProps } from 'next/app';
+import CssBaseline from '@mui/material/CssBaseline';
+import Head from 'next/head';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface DefaultTheme extends Theme {}
 }
 
-
-const theme = createMuiTheme(adaptV4Theme({
+const theme = createTheme({
   palette: {
-    primary: { main: '#000' },
-    secondary: { main: '#FFF' },
+    primary: {
+      main: '#556cd6',
+    },
+    secondary: {
+      main: '#19857b',
+    },
+    error: {
+      main: '#red',
+    },
+    background: {
+      default: '#fff',
+    },
   },
-}));
+});
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
+  const pageTitle = (Component as any).pageTitle || 'Maiia Pro';
+  const pageSubtitle = (Component as any).pageSubtitle;
+
   return (
+    <ThemeProvider theme={theme}>
     <Provider store={store}>
       <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <Layout title={Component.pageTitle} subtitle={Component.pageSubtitle}>
+          <CssBaseline />
+          <Head>
+            <title>{pageTitle}</title>
+            <meta name="viewport" content="initial-scale=1, width=device-width" />
+          </Head>
+          <Layout title={pageTitle} subtitle={pageSubtitle}>
             <Component {...pageProps} />
           </Layout>
-        </ThemeProvider>
       </StyledEngineProvider>
     </Provider>
+    </ThemeProvider>
   );
 }
 
