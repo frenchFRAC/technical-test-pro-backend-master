@@ -59,6 +59,13 @@ class ProAvailabilityServiceTest {
     }
 
     @Test
+    void generateAvailabilitesForPractitionerWithNoTimeSlots() {
+        Practitioner practitioner = practitionerRepository.save(entityFactory.createPractitioner());
+        List<Availability> availabilities = proAvailabilityService.generateAvailabilities(practitioner.getId());
+        assertEquals(0, availabilities.size());
+    }
+
+    @Test
     void checkAvailabilitiesAreNotDuplicated() {
         Practitioner practitioner = practitionerRepository.save(entityFactory.createPractitioner());
         LocalDateTime startDate = LocalDateTime.of(2020, Month.FEBRUARY, 5, 11, 0, 0);
